@@ -1,0 +1,168 @@
+
+package prototype2;
+
+/**
+*
+* @author Nathan
+*/
+
+import java.io.*;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class OperatorUI {
+
+    //Run the menu interface ---------
+    String demoOptions[] = {"Add a new member", "View a member", "View all members", "Update details", "Delete Member", "Exit"}; 
+    char demoChoice;         
+    Menu demoMenu= new Menu("Menu ", demoOptions, "Enter the menu option: ");         
+
+    OperatorController con = new OperatorController();
+    ArrayList list = new ArrayList();
+
+    public OperatorUI(OperatorController control) {
+        con = control;
+    }
+    
+    public void displayMenu() {
+
+        boolean exit = true;
+        while (exit){
+
+            System.out.println("----------------------------------------------");
+            demoChoice = demoMenu.offerMenu();
+            String name = "";
+            String dob = "";
+            String email = "";
+            String mobile = "";
+            
+            BufferedReader keyboard;
+
+            switch (demoChoice){
+
+            case 'A': //to add a new member
+
+                try {
+
+                    System.out.println("Enter the name: ");
+                    keyboard = new  BufferedReader(new InputStreamReader(System.in));
+                    name = keyboard.readLine();
+                    String nameValidation = ("^[a-zA-Z]+$");
+
+                    if(name.matches(nameValidation)){
+                    }else{
+                        System.out.println("Invalid input: Can only acept letters");
+                        break;
+                    }
+
+                    System.out.println("Enter date of birth: ");
+                    dob = keyboard.readLine();
+                    System.out.println("Enter email: ");
+                    email = keyboard.readLine();
+                    System.out.println("Enter mobile: ");
+                    mobile = keyboard.readLine();
+                    String mobileValidation = ("^[0-9]+$");
+
+                    if(mobile.matches(mobileValidation)){
+                    }else{
+                        System.out.println("Invalid input: Can only accept numbers");
+                        break;
+                    }
+
+                    int id = ThreadLocalRandom.current().nextInt(100, 1000 + 1);
+                    System.out.println("Member ID: " + id);
+                    
+                    con.register(id, name, dob, email, mobile);
+                }
+
+                catch (java.io.IOException exception){}
+
+                //-------------------------------------------               
+
+            break;
+
+            case 'B': //to view a member details
+
+                try {
+
+                    System.out.println("Enter ID:");
+                    keyboard = new  BufferedReader(new InputStreamReader(System.in));
+                    String fromKeyboard = keyboard.readLine();
+                    int id = Integer.parseInt(fromKeyboard);
+                    
+                    con.viewDetails(id);
+                 }
+
+                catch (java.io.IOException exception){}
+
+                //-------------------------------------------
+
+            break;      
+
+            case 'C': //to view all member details
+
+                    con.viewAllDetails();
+
+                //-------------------------------------------
+
+            break;
+
+            case 'D':
+
+                try {
+
+                    System.out.println("Enter ID:");
+                    keyboard = new  BufferedReader(new InputStreamReader(System.in));
+                    String fromKeyboard = keyboard.readLine();
+                    int id = Integer.parseInt(fromKeyboard);               
+                    System.out.println("Enter name");
+                    name = keyboard.readLine();
+                    System.out.println("Enter Date of birth");
+                    dob = keyboard.readLine();
+                    System.out.println("Enter Email");
+                    email = keyboard.readLine();
+                    System.out.println("Enter Mobile number");
+                    mobile = keyboard.readLine();
+
+                    con.updateDetails(id, name, dob, email, mobile);
+                }
+
+                catch (java.io.IOException exception){System.err.println(exception.getMessage());}
+
+                //-------------------------------------------
+
+            break;
+            
+            case 'E': 
+
+                try {
+
+                    System.out.println("Enter ID number:");
+                    keyboard = new  BufferedReader(new InputStreamReader(System.in));
+                    String fromKeyboard = keyboard.readLine();
+                    int id = Integer.parseInt(fromKeyboard);
+
+                    con.deleteDetails(id);
+                }
+
+                catch (java.io.IOException exception){}
+
+                //-------------------------------------------
+
+            break;
+
+            case 'F': //to exist the system
+
+                        System.out.println("You have exited the system.");
+
+                exit = false;
+
+           }
+
+        }//end while
+
+      }//end
+
+}    
+
