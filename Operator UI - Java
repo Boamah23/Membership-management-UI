@@ -1,0 +1,103 @@
+package prototype;
+
+/**
+*
+* @author Nathan
+*/
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class OperatorUI {
+        
+    //Run the menu interface ---------
+    String demoOptions[] = {"Add a new member", "View a member", "View all members", "Exit the system"}; 
+    char demoChoice;         
+    Menu demoMenu= new Menu("Menu ", demoOptions, "Enter the menu option: ");         
+    
+    OperatorController con = new OperatorController();
+    ArrayList list = new ArrayList();
+    
+    public OperatorUI(OperatorController control) {
+        con = control;
+    }   
+
+    public void displayMenu() {
+
+        boolean exit = true;
+        while (exit){
+
+            System.out.println("----------------------------------------------");
+            demoChoice = demoMenu.offerMenu();
+            String name = "";
+            String dob = "";
+            String email = "";
+            String mobile = "";
+            int id = 0;
+            
+            BufferedReader keyboard;
+
+            switch (demoChoice){
+
+            case 'A': //to add a new dentist
+
+                try {
+
+                    System.out.println("Enter the name: ");
+                    keyboard = new  BufferedReader(new InputStreamReader(System.in));
+                    name = keyboard.readLine();                   
+                    System.out.println("Enter date of birth: ");
+                    dob = keyboard.readLine();
+                    System.out.println("Enter email: ");
+                    email = keyboard.readLine();
+                    System.out.println("Enter mobile: ");
+                    mobile = keyboard.readLine();
+                    System.out.println("Enter an ID: ");
+                    String fromKeyboard = keyboard.readLine();
+                    id = Integer.parseInt(fromKeyboard);
+                    
+                    con.register(id, name, dob, email, mobile);
+                }
+
+                catch (java.io.IOException exception){}
+
+                //-------------------------------------------               
+
+            break;
+            
+            case 'B': //to view a dentist details
+
+                try {
+
+                    System.out.println("Enter ID:");
+                    keyboard = new  BufferedReader(new InputStreamReader(System.in));
+                    String fromKeyboard = keyboard.readLine();
+                    id = Integer.parseInt(fromKeyboard);
+                    
+                    con.viewDetails(id);
+                 }
+
+                catch (java.io.IOException exception){}
+
+                //-------------------------------------------
+
+            break;      
+
+            case 'C': //to view all dentist details
+
+                    con.viewAllDetails();
+
+                //-------------------------------------------
+
+            break;                           
+
+            case 'D': //to exist the system
+
+                        System.out.println("You have exited the system.");
+                exit = false;
+            }
+
+        }//end while
+
+      }//end
+}   
