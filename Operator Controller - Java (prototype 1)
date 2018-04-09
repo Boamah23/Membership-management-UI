@@ -36,7 +36,7 @@ public class OperatorController{
             boolean found  = false;
             int i = 0;
             while (i<list.size() && !found){
-
+ 
                 Member temp = (Member)list.get(i);
 
                 if (id == temp.getID()){
