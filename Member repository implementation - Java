@@ -1,0 +1,93 @@
+package prototype;
+
+/**
+*
+* @author Nathan
+*/
+
+import java.util.ArrayList;
+import java.sql.*;
+
+
+public class MemberRepoImpl implements MemberRepo {
+
+    private ArrayList<Member> members;
+    
+    public ArrayList read(Connection conn){ //reading data from database
+
+        System.out.println("Reading from the database... ");
+        ArrayList<Member> list = new ArrayList<Member>(); //declares what goes into thec array list
+
+        try {  
+
+                Statement st = conn.createStatement();
+                ResultSet rs=null;
+                String sql = "SELECT * FROM MEMBER"; //selects all from database
+                rs=st.executeQuery(sql);
+
+                while(rs.next()){
+
+                    Member mem = new Member();
+                    mem.setID(rs.getInt("ID"));
+                    mem.setName(rs.getString("NAME"));
+                    mem.setDOB(rs.getString("DOB"));
+                    mem.setEmail(rs.getString("EMAIL"));
+                    mem.setMobile(rs.getString("MOBILE"));
+                    list.add(mem); //adds all variables to list
+
+                    System.out.println(rs.getInt("ID")+"\t"+rs.getString("NAME")+
+                            "\t"+rs.getString("DOB")+"\t"+rs.getString("EMAIL")+
+                             "\t"+rs.getString("MOBILE"));
+                }
+
+                rs.close();
+                st.close();
+
+        } catch (SQLException ex) {
+            System.out.println("SQLException failed ! ");
+        }
+
+        members = list;
+
+        System.out.println("members..." + list.size());
+        return members;
+    }
+
+    public void write(Connection conn, ArrayList members){ //writing into database
+
+        System.out.println("Writing to the database... ");
+        Statement st;
+
+        try {
+
+            st = conn.createStatement();
+            String sql = "DELETE FROM MEMBER";
+            st.executeUpdate(sql);
+            st.close();
+        }
+
+        catch (SQLException ex) {
+                    System.out.println("SQLException error ");
+            }
+
+        for (int i = 0; i<members.size(); i++) {
+
+            Member member = (Member)members.get(i);
+
+            try {  
+
+                st = conn.createStatement(); //insert data into database
+                String sql = "INSERT INTO MEMBER VALUES (" + member.getID() + ", '" + member.getName() + "' , '" + member.getDOB() + ", '" + member.getEmail() + "' , '" + member.getMobile() + "')";
+                st.executeUpdate(sql);
+                st.close();
+            }
+
+            catch (SQLException ex) { //catch exception
+                    System.out.println("SQLException error ");
+            }        
+
+        }//end for
+
+    }       
+
+}
