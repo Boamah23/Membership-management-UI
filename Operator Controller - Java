@@ -1,0 +1,66 @@
+package prototype;
+
+import java.sql.*;
+import java.util.*;
+
+/**
+*
+* @author Nathan
+*/
+
+public class OperatorController{
+
+        ArrayList<Member> list = new ArrayList<Member>();   
+
+        public ArrayList<Member> getMemList(){
+            return list;
+         } 
+         
+        public void setMemList(ArrayList<Member> aList){
+            list = aList;
+         }
+
+        public void register(int id, String name, String dob, String email, String mobile){
+
+             Member mem = new Member();
+             mem.setID(id);
+             mem.setName(name);
+             mem.setDOB(dob);
+             mem.setEmail(email);
+             mem.setMobile(mobile);
+             list.add(mem);
+         }     
+         
+         public void viewDetails(int id){
+         
+            boolean found  = false;
+            int i = 0;
+            while (i<list.size() && !found){
+
+                Member temp = (Member)list.get(i);
+
+                if (id == temp.getID()){
+                    System.out.print("Member details: \n name: " + temp.getName() +
+                     "\n date of birth: " +  temp.getDOB() + "\n email: " + temp.getEmail()
+                      + "\n mobile: " + temp.getMobile() + "\n");
+                    found = true;
+                }
+
+                i++;
+            } 
+         }   
+         
+        public void viewAllDetails(){
+        
+        for (int i = 0; i<list.size(); i++){
+
+            Member temp = (Member)list.get(i);
+                System.out.print("Member details: \n id: " + temp.getID() +
+                     "\n name: " + temp.getName() +
+                     "\n date of birth: " +  temp.getDOB() + "\n email: "
+                      + temp.getEmail() + "\n mobile: " + temp.getMobile() + "\n");
+            }             
+
+         }       
+
+} 
