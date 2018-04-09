@@ -1,0 +1,17 @@
+package prototype;
+
+/**
+*
+* @author Nathan
+*/
+
+import java.sql.*;
+import java.util.ArrayList;
+
+public interface MemberRepo {
+
+    public ArrayList read(Connection conn);
+    void write(Connection conn, ArrayList list);
+
+}
+
